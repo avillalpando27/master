@@ -12,6 +12,7 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import java.text.DecimalFormat;
 
 /** A special panel to display the detail of an item. */
 
@@ -53,23 +54,31 @@ public class ItemView extends JPanel {
     @Override
 	public void paintComponent(Graphics g) {
         Item testItem = new Item();
-        testItem.setItemDetails("Five Ten Hiangle Men's Climbing Shoes", "https://amzn.to/2HlSGMH", 165.00);
-        super.paintComponent(g); 
+        testItem.setItemDetails("Five Ten Hiangle Men's Climbing Shoes", "https://amzn.to/2HlSGMH", 164.99f);
+
+        super.paintComponent(g);
+        DecimalFormat df = new DecimalFormat("###.##");
         //Dimension dim = getSize();
-        
-        //--
-        //-- WRITE YOUR CODE HERE!
-        //--
-        int x = 20, y = 30;
+
+        Color red = Color.RED;
+        Color green = Color.GREEN;
+
+        int x = 100, y = 20;
         // g.drawImage(getImage("view.png"), x, y)
         g.drawString("Here are the item details! ", x, y);
-        y += 40;
-        g.drawString("Item Name: \t" + testItem.getName(), x, y);
-        x += 44;
-        y +=20;
-        g.drawString("URL: \t" + testItem.getURL(), x, y);
-        x -= 44;
-        y+=20;
+        x = 10;
+        y += 30;
+        g.drawString("           Name: \t" + testItem.getName(), x, y);
+        y += 20;
+        g.drawString("              URL: \t" + testItem.getURL(), x, y);
+        y += 20;
+        g.drawString("    Start Price: \t$" + testItem.getInitialPrice(), x, y);
+        y += 20;
+        g.drawString("Current Price: \t$"+ df.format(testItem.getCurrentPrice()), x, y);
+        y += 20;
+        g.drawString("Price Change: \t% " + df.format(testItem.getChange()), x, y);
+        y += 20;
+        g.drawString("  Date Added: \t" + testItem.returnDate(),  x, y);
     }
     
     /** Return true if the given screen coordinate is inside the viewPage icon. */

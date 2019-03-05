@@ -7,14 +7,23 @@ public class Item {
 
     private static String itemName;
     private static String itemURL;
-    private static double itemPrice;
-    //private static Date dateAdded = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    private static float itemInitialPrice;
+    private static float itemCurrentPrice;
 
 
-    public static void setItemDetails(String name, String uRL, double price){
+
+    public static void setItemDetails(String name, String uRL, float price){
         itemName = name;
         itemURL = uRL;
-        itemPrice = price;
+        itemInitialPrice = price;
+    }
+    public static String returnDate(){
+
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+
+        return formatter.format(date);
+
     }
 
     public static String getName(){
@@ -25,21 +34,24 @@ public class Item {
         return itemURL;
     }
 
-    public static double getPrice(){
-        return itemPrice;
+    public static float getInitialPrice(){
+        return itemInitialPrice;
     }
 
+    public static float getCurrentPrice(){
+        PriceFinder randomPrice = new PriceFinder();
+        itemCurrentPrice = randomPrice.returnNewPrice();
+        return itemCurrentPrice;
+    }
     /*public static Date getDateAdded(){
         return dateAdded;
     }*/
 
-    public static double getChange(){
+    public static float getChange(){
 
-        double priceChange;
-        PriceFinder randomPrice = new PriceFinder();
-        double newPrice = randomPrice.returnNewPrice();
+        float priceChange;
 
-        priceChange = ((itemPrice - newPrice)/itemPrice) * 100;
+        priceChange = ((itemInitialPrice - itemCurrentPrice)/itemInitialPrice) * 100;
 
         return priceChange * -1;
 
