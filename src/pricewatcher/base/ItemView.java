@@ -1,3 +1,13 @@
+/**
+ * CS 3331 -- Advanced Object Oriented Programming
+ * HW 02
+ * ItemView.java
+ * By: Angel Villalpando
+ * Instructor: Yoonsik Cheon
+ * Last Modified: March 6, 2019
+ */
+
+
 package pricewatcher.base;
 
 import java.awt.Color;
@@ -13,6 +23,9 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.text.DecimalFormat;
+import javax.sound.sampled.*;
+
+
 
 /** A special panel to display the detail of an item. */
 
@@ -20,6 +33,11 @@ import java.text.DecimalFormat;
 public class ItemView extends JPanel {
     
 	/** Interface to notify a click on the view page icon. */
+
+	public static Item testItem = new Item();
+
+	public static NoApplet np = new NoApplet();
+
 	public interface ClickListener {
 		
 		/** Callback to be invoked when the view page icon is clicked. */
@@ -53,18 +71,15 @@ public class ItemView extends JPanel {
     /** Overridden here to display the details of the item. */
     @Override
 	public void paintComponent(Graphics g) {
-        Item testItem = new Item();
+
         testItem.setItemDetails("Five Ten Hiangle Men's Climbing Shoes", "https://amzn.to/2HlSGMH", 164.99f);
 
         super.paintComponent(g);
         DecimalFormat df = new DecimalFormat("###.##");
         //Dimension dim = getSize();
 
-        Color red = Color.RED;
-        Color green = Color.GREEN;
 
         int x = 100, y = 20;
-        // g.drawImage(getImage("view.png"), x, y)
         g.drawString("Here are the item details! ", x, y);
         x = 10;
         y += 30;
@@ -76,7 +91,23 @@ public class ItemView extends JPanel {
         y += 20;
         g.drawString("Current Price: \t$"+ df.format(testItem.getCurrentPrice()), x, y);
         y += 20;
-        g.drawString("Price Change: \t% " + df.format(testItem.getChange()), x, y);
+
+        /* the following code segment is where the text color takes place,as well as where the sound is played
+        * when the price of the item drops. Simple if/else statements do the trick.*/
+        float tempChange = testItem.getChange();
+        if(tempChange < 0){
+            g.setColor(Color.RED.brighter().brighter().brighter());
+            g.drawString("Price Change: \t% " + df.format(testItem.getChange()), x, y);
+
+            playSound(); // method call to play audio clip
+           // np.play(np.getCodeBase(), "pricewatcher/base/sound/DeepPercussion.wav"); // previous attempt at audio
+            g.setColor(Color.BLACK);
+        }else{
+            g.setColor(Color.GREEN);
+            g.drawString("Price Change: \t% " + df.format(testItem.getChange()), x, y);
+            g.setColor(Color.BLACK);
+        }
+        //g.drawString("Price Change: \t% " + df.format(testItem.getChange()), x, y);
         y += 20;
         g.drawString("  Date Added: \t" + testItem.returnDate(),  x, y);
     }
@@ -98,5 +129,24 @@ public class ItemView extends JPanel {
             e.printStackTrace();
         }
         return null;
+    }
+    /* This is a method to play the sound when the experiences a drop.*/
+    public void playSound(){
+        try {
+            Clip audio;
+            (audio = AudioSystem.getClip()).open(AudioSystem.getAudioInputStream(getClass().getResource("/sound/DeepPercussion.wav")));
+            audio.start();
+        }
+        catch (IOException error0) {
+            final LineUnavailableException ex = new LineUnavailableException();
+            ex.printStackTrace();
+        }
+        catch (LineUnavailableException error2) {
+            System.out.println("This file is not available.");
+        }
+        catch (UnsupportedAudioFileException error1) {
+                System.out.println("This file type is not supported.");
+        }
+
     }
 }
