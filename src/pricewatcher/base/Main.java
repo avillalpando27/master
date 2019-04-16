@@ -16,16 +16,16 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.Desktop;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.io.*;
+
 
 /**
  * A dialog for tracking the price of an item.
@@ -117,14 +117,14 @@ public class Main extends JFrame {
     /** Create a control panel consisting of a refresh button. */
     private JPanel makeControlPanel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEADING));
-        JButton refreshButton = new JButton("Refresh");
+        JButton checkButton = new JButton(new ImageIcon(imageMaker("checkprice.png")));
         JButton viewLink = new JButton("View Item");
-        refreshButton.setFocusPainted(false);
+        checkButton.setFocusPainted(false);
         viewLink.setFocusPainted(false);
-        refreshButton.addActionListener(this::refreshButtonClicked);
+        checkButton.addActionListener(this::refreshButtonClicked);
         viewLink.addActionListener(this::viewPageClicked);
         panel.add(viewLink);
-        panel.add(refreshButton);
+        panel.add(checkButton);
         return panel;
     }
 
@@ -144,6 +144,16 @@ public class Main extends JFrame {
 
     public static void main(String[] args) {
         new Main();
+    }
+
+    public BufferedImage imageMaker(String file){
+        try{
+            return ImageIO.read(new File("image/" + file));
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

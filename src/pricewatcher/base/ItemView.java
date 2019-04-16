@@ -69,7 +69,7 @@ public class ItemView extends JPanel {
     }
     
     /** Overridden here to display the details of the item. */
-    @Override
+   // @Override
 	public void paintComponent(Graphics g) {
 
         testItem.setItemDetails("Five Ten Hiangle Men's Climbing Shoes", "https://amzn.to/2HlSGMH", 164.99f);
