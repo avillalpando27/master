@@ -83,4 +83,9 @@ public class Item {
 
         }
 
+    public static String itemToString(){
+        String details = "Name:\t" + getName() + "\n" + "URL:\t" + getURL() + "\n" + "Initial Price:\t" + getInitialPrice() + "\n" + "Current Price:\t" + getCurrentPrice() + "\n" + "Date Added:\t" + "04/20/2019";
+        return details;
+    }
+
 }
