@@ -1,12 +1,11 @@
 /**
  * CS 3331 -- Advanced Object Oriented Programming
- * HW 02
- * PriceFinder.java
- * By: Angel Villalpando
+ * HW 03
+ * Main.java
+ * By: Angel Villalpando / Edgar Escobedo / Jorge Quinonez
  * Instructor: Yoonsik Cheon
- * Last Modified: March 6 , 2019
+ * Last Modified: April 22, 2019
  */
-
 
 package pricewatcher.base;
 
@@ -14,14 +13,14 @@ import java.util.Random;
 
 public class PriceFinder{
 
-    public static float newPrice;
-
+    /**
+     * Returns the new, randomly generated price for item.
+     * @return float Item's random new price
+     */
     public static float returnNewPrice(){
 
         Random rando = new Random();
-
         return 100 + rando.nextFloat() * (300 - 100);
-
     }
 }
 //

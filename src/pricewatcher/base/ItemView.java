@@ -1,12 +1,11 @@
 /**
  * CS 3331 -- Advanced Object Oriented Programming
- * HW 02
- * ItemView.java
- * By: Angel Villalpando
+ * HW 03
+ * Main.java
+ * By: Angel Villalpando / Edgar Escobedo / Jorge Quinonez
  * Instructor: Yoonsik Cheon
- * Last Modified: March 6, 2019
+ * Last Modified: April 22, 2019
  */
-
 
 package pricewatcher.base;
 

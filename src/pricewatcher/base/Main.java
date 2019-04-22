@@ -1,10 +1,10 @@
 /**
  * CS 3331 -- Advanced Object Oriented Programming
- * HW 02
+ * HW 03
  * Main.java
- * By: Angel Villalpando
+ * By: Angel Villalpando / Edgar Escobedo / Jorge Quinonez
  * Instructor: Yoonsik Cheon
- * Last Modified: March 6, 2019
+ * Last Modified: April 22, 2019
  */
 
 package pricewatcher.base;
@@ -22,10 +22,11 @@ import java.awt.event.*;
 
 
 /**
- * A dialog for tracking the price of an item.
- *
- * @author Yoonsik Cheon
- */
+ *  @author VillalpandoEscobedoQuinonez
+ *  @version 1.2
+ *  @since 1.0
+ * */
+
 @SuppressWarnings("serial")
 public class Main extends JFrame {
 
@@ -95,6 +96,7 @@ public class Main extends JFrame {
 
         setLayout(new BorderLayout());
         final JPanel control = makeControlPanel();
+        this.setJMenuBar(menuMaker());
         control.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
         add(control, BorderLayout.NORTH);
 
@@ -207,10 +209,31 @@ public class Main extends JFrame {
 
     }
 
-    public static JButton buttonMaker(String s){
+    private static JButton buttonMaker(String s){
         final JButton button;
         button = new JButton(new ImageIcon(iconMaker(s)));
         button.setFocusPainted(false);
         return button;
     }
+
+    private static JMenuBar menuMaker(){
+        final JMenuBar menuBar = new JMenuBar();
+        final JMenu menu = new JMenu("App");
+        menuBar.add(menu);
+        menu.addSeparator();
+        final JMenuItem menuItem;
+        (menuItem = new JMenuItem("Exit", 88)).addActionListener(p0 -> System.exit(0));
+        menu.add(menuItem);
+        final JMenu menu2;
+        (menu2 = new JMenu("Item")).setMnemonic(73);
+        menuBar.add(menu2);
+        menu2.addSeparator();
+        final JMenu menu3 = new JMenu("Selected");
+        menu2.add(menu3);
+        menu3.addSeparator();
+
+        return menuBar;
+    }
+
+
 }
