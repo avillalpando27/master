@@ -11,6 +11,7 @@ package pricewatcher.base;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -27,10 +28,11 @@ import java.awt.event.*;
  */
 @SuppressWarnings("serial")
 public class Main extends JFrame {
+
     final private static String FILE_PATH = "/Users/angelvillalpando/Desktop/2-DGraphics/src/pricewatcher/base/image/";
 
     /** Default dimension of the dialog. */
-    private final static Dimension DEFAULT_SIZE = new Dimension(400, 300);
+    private final static Dimension DEFAULT_SIZE = new Dimension(600, 400);
 
     /** Special panel to display the watched item. */
     private ItemView itemView;
@@ -50,10 +52,10 @@ public class Main extends JFrame {
         setSize(dim);
 
         configureUI();
-        //setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
-        //setResizable(false);
+        setResizable(true);
         showMessage("Welcome to Price Watcher!");
     }
 
@@ -63,8 +65,8 @@ public class Main extends JFrame {
     private void refreshButtonClicked(ActionEvent event) {
 
         PriceFinder refreshedPrice = new PriceFinder(); // generates a new price to set as a temp item's new price
-        ItemView tempItem = new ItemView();
-        tempItem.testItem.setPrice(refreshedPrice.returnNewPrice());
+
+        itemView.testItem.setPrice(refreshedPrice.returnNewPrice());
         configureUI();  // essentially pushes the new item information to the panel
 
         showMessage("Item price updated! ");
@@ -76,7 +78,7 @@ public class Main extends JFrame {
     private void viewPageClicked(ActionEvent event) {
 
         Item tempItem = new Item();
-        String itemURL = "https://www.google.com";
+        String itemURL = tempItem.itemURL;
         Desktop dk = Desktop.getDesktop();
         try{
             dk.browse(new java.net.URI(itemURL));
@@ -92,18 +94,30 @@ public class Main extends JFrame {
     private void configureUI() {
 
         setLayout(new BorderLayout());
-        JPanel control = makeControlPanel();
+        final JPanel control = makeControlPanel();
         control.setBorder(BorderFactory.createEmptyBorder(10,16,0,16));
         add(control, BorderLayout.NORTH);
+
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menu = new JMenu("App");
+        menu.setMnemonic(KeyEvent.VK_A);
+        menu.getAccessibleContext().setAccessibleDescription("The only menu in this program that has menu items");
+        menuBar.add(menu);
+
         JPanel board = new JPanel();
-        //board.setBorder(BorderFactory.createCompoundBorder(
-                //BorderFactory.createEmptyBorder(10,16,0,16),
-               // BorderFactory.createLineBorder(Color.CYAN)));
+        board.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(10,16,0,16),
+                BorderFactory.createLineBorder(Color.CYAN)));
         board.setLayout(new GridLayout(1,1));
-        board.add(listMaker());
-        itemView = new ItemView();
-        // itemView.setClickListener(this::viewPageClicked);
-        //board.add(itemView);
+
+        JScrollPane pane = new JScrollPane();
+
+
+        JList testItemList = listMaker();
+        pane.setViewportView(testItemList);
+        board.add(pane);
+
+
         add(board, BorderLayout.CENTER);
         msgBar.setBorder(BorderFactory.createEmptyBorder(10,16,10,0));
         add(msgBar, BorderLayout.SOUTH);
@@ -111,21 +125,12 @@ public class Main extends JFrame {
 
     /** Create a control panel consisting of a refresh button. */
     private JPanel makeControlPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu =
-
-//Build the first menu.
-        menu = new JMenu("App");
-        menu.setMnemonic(KeyEvent.VK_A);
-        menu.getAccessibleContext().setAccessibleDescription(
-                "The only menu in this program that has menu items");
-        menuBar.add(menu);
-
-
-        JButton refreshButton = new JButton(new ImageIcon(iconMaker("refreshREAL.png")));
-        refreshButton.setToolTipText("Check Item Price");
+        final JPanel panel = new JPanel(new FlowLayout(3));
+        final JButton refreshButton = new JButton(new ImageIcon(iconMaker("refreshREAL.png")));
+        refreshButton.setFocusPainted(false);
+        refreshButton.addActionListener(this::refreshButtonClicked);
+        refreshButton.setToolTipText("Refresh Item Price(s)");
         //checkButton.setPreferredSize(new Dimension(25,25));
         JButton viewLink = new JButton(new ImageIcon(iconMaker("visitSite.png")));
         viewLink.setToolTipText("Visit Item Website");
@@ -137,11 +142,9 @@ public class Main extends JFrame {
         editItem.setToolTipText("Edit Item Details");
 
 
-        refreshButton.setFocusPainted(false);
         viewLink.setFocusPainted(false);
         deleteItem.setFocusPainted(false);
 
-        refreshButton.addActionListener(this::refreshButtonClicked);
         viewLink.addActionListener(this::viewPageClicked);
         panel.add(refreshButton);
         panel.add(viewLink);
@@ -181,97 +184,26 @@ public class Main extends JFrame {
         return buttonIcon;
     }
 
-    public static JMenuBar createMenuBar() {
-
-        JMenuBar menuBar;
-        JMenu menu, submenu;
-        JMenuItem menuItem;
-        JRadioButtonMenuItem rdmi;
-        JCheckBoxMenuItem cbmi;
-
-        //Create the menu bar.
-        menuBar = new JMenuBar();
-
-        //Build the File Menu.
-        menu = new JMenu("File");
-        menu.setMnemonic(KeyEvent.VK_F);
-        menu.getAccessibleContext().setAccessibleDescription("Dealing with Files");
-        menuBar.add(menu);
-
-        //a group of JMenuItems
-        menuItem = new JMenuItem("New Project...",
-                new ImageIcon("images/newproject.png"));
-        menuItem.setMnemonic(KeyEvent.VK_P);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_1, ActionEvent.ALT_MASK));
-        menuItem.getAccessibleContext().setAccessibleDescription(
-                "New Project");
-        menu.add(menuItem);
-
-        menuItem = new JMenuItem("New File...",
-                new ImageIcon("images/newfile.png"));
-        menuItem.setMnemonic(KeyEvent.VK_F);
-        menu.add(menuItem);
-
-        //a group of check box menu items
-        menu.addSeparator();
-        cbmi = new JCheckBoxMenuItem("A check box menu item");
-        cbmi.setMnemonic(KeyEvent.VK_C);
-        menu.add(cbmi);
-
-        cbmi = new JCheckBoxMenuItem("Another one");
-        cbmi.setMnemonic(KeyEvent.VK_H);
-        menu.add(cbmi);
-
-        //a group of radio button menu items
-        menu.addSeparator();
-        ButtonGroup group = new ButtonGroup();
-        rdmi = new JRadioButtonMenuItem("Radio button menu item");
-        rdmi.setSelected(true);
-        rdmi.setMnemonic(KeyEvent.VK_R);
-        group.add(rdmi);
-        menu.add(rdmi);
-
-        rdmi = new JRadioButtonMenuItem("Another radio button");
-        rdmi.setMnemonic(KeyEvent.VK_O);
-        group.add(rdmi);
-        menu.add(rdmi);
-
-        //a submenu
-        menu.addSeparator();
-        submenu = new JMenu("A submenu");
-        submenu.setMnemonic(KeyEvent.VK_S);
-
-        menuItem = new JMenuItem("Menu item in the submenu");
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_2, ActionEvent.ALT_MASK));
-        submenu.add(menuItem);
-
-        menuItem = new JMenuItem("Another menu item");
-        submenu.add(menuItem);
-        menu.add(submenu);
-
-        //Build Edit menu in the menu bar.
-        menu = new JMenu("Edit");
-        menu.setMnemonic(KeyEvent.VK_E);
-        menu.getAccessibleContext().setAccessibleDescription(
-                "Edit Menu");
-        menuBar.add(menu);
-        return menuBar;
-
-    }
-
     public static JList listMaker() {
-        Item testItem = new Item();
-        testItem.setItemDetails("Shoes", "https://www.google.com", 165.00f);
-        Item testItem1 = new Item();
-        testItem1.setItemDetails("Clothes", "https://www.ebay.com", 48.00f);
-        String[] deets = {testItem.itemToString(), testItem1.itemToString()};
-        System.out.println(testItem.itemToString());
 
-        JList itemList = new JList(deets);
+        Item[] list = new Item[2];
+        list[0] = new Item("Poopie Underwear Cleaner", "https://www.kewl.com", 200.00f);
+        list[1] = new Item("Shit", "https://www.poopfactory.com", 150.00f);
 
-        return itemList;
+        ItemViewRenderer itemRenderer = new ItemViewRenderer();
+
+
+        DefaultListModel<Item> itemList = new DefaultListModel<>();
+        itemList.addElement(list[0]);
+        itemList.addElement(list[1]);
+
+
+        JList<Item> jItemList = new JList<>(itemList);
+        jItemList.setCellRenderer(itemRenderer);
+
+
+
+        return jItemList;
 
     }
 
@@ -281,5 +213,4 @@ public class Main extends JFrame {
         button.setFocusPainted(false);
         return button;
     }
-
 }

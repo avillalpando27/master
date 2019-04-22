@@ -11,10 +11,10 @@ import java.util.Date;
 
 public class Item {
 
-    private static String itemName;
-    private static String itemURL;
-    private static float itemInitialPrice;
-    private static float itemCurrentPrice;
+    public static String itemName;
+    public static String itemURL;
+    public static float itemInitialPrice;
+    public static float itemCurrentPrice;
     //private static URL testURL = new URL("https://amzn.to/2HlSGMH");
 
 
@@ -24,11 +24,22 @@ public class Item {
      * @param uRL URL of the item being added to Price Watcher
      * @param price Price of the item being added to Price Watcher
      *  */
+
+    public Item(){
+
+    }
+    public Item(String name, String uRL, float price){
+        itemName = name;
+        itemURL = uRL;
+        itemInitialPrice = price;
+    }
+
     public static void setItemDetails(String name, String uRL, float price){
         itemName = name;
         itemURL = uRL;
         itemInitialPrice = price;
     }
+
 
     /**
      * Returns the date the item was added to the Price Watcher app.

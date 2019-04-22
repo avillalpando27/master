@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.text.DecimalFormat;
 import javax.sound.sampled.*;
 
@@ -33,10 +33,7 @@ import javax.sound.sampled.*;
 public class ItemView extends JPanel {
     
 	/** Interface to notify a click on the view page icon. */
-
-	public static Item testItem = new Item();
-
-	public static NoApplet np = new NoApplet();
+	public static Item testItem;
 
 	public interface ClickListener {
 		
@@ -70,47 +67,40 @@ public class ItemView extends JPanel {
     
     /** Overridden here to display the details of the item. */
    // @Override
-	public void paintComponent(Graphics g) {
-
-        testItem.setItemDetails("Five Ten Hiangle Men's Climbing Shoes", "https://amzn.to/2HlSGMH", 164.99f);
+	public void paintComponent(final Graphics g) {
 
         super.paintComponent(g);
         DecimalFormat df = new DecimalFormat("###.##");
-        //Dimension dim = getSize();
+        Dimension dim = this.getSize();
 
+        g.setColor(Color.BLACK);
+        g.drawString("Name: ", 20, 40);
+        g.drawString(testItem.itemName, 80, 40);
+        g.drawString("URL: ", 20, 60);
+        g.drawString(testItem.itemURL, 80, 60);
 
-        int x = 100, y = 20;
-        g.drawString("Here are the item details! ", x, y);
-        x = 10;
-        y += 30;
-        g.drawString("           Name: \t" + testItem.getName(), x, y);
-        y += 20;
-        g.drawString("              URL: \t" + testItem.getURL(), x, y);
-        y += 20;
-        g.drawString("    Start Price: \t$" + testItem.getInitialPrice(), x, y);
-        y += 20;
-        g.drawString("Current Price: \t$"+ df.format(testItem.getCurrentPrice()), x, y);
-        y += 20;
+        g.drawString("Price:", 20, 80);
+        g.drawString("$" + df.format(testItem.itemCurrentPrice), 80, 80);
 
         /* the following code segment is where the text color takes place,as well as where the sound is played
         * when the price of the item drops. Simple if/else statements do the trick.*/
-        float tempChange = testItem.getChange();
+        final float tempChange = testItem.getChange();
         if(tempChange < 0){
             g.setColor(Color.RED.brighter().brighter().brighter());
-            g.drawString("Price Change: \t% " + df.format(testItem.getChange()), x, y);
+            g.drawString("Change:  % " + df.format(testItem.getChange()), 20, 100);
 
             playSound(); // method call to play audio clip
            // np.play(np.getCodeBase(), "pricewatcher/base/sound/DeepPercussion.wav"); // previous attempt at audio
             g.setColor(Color.BLACK);
         }else{
             g.setColor(Color.GREEN);
-            g.drawString("Price Change: \t% " + df.format(testItem.getChange()), x, y);
+            g.drawString("Change:  % " + df.format(testItem.getChange()), 20, 100);
             g.setColor(Color.BLACK);
         }
         //g.drawString("Price Change: \t% " + df.format(testItem.getChange()), x, y);
-        y += 20;
-        g.drawString("  Date Added: \t" + testItem.returnDate(),  x, y);
+        g.drawString("Date Added: " + testItem.returnDate() + " [ $" + df.format(testItem.itemInitialPrice) + " ]",  20, 120);
     }
+
     
     /** Return true if the given screen coordinate is inside the viewPage icon. */
     private boolean isViewPageClicked(int x, int y) {
