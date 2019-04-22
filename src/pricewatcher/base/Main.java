@@ -34,10 +34,7 @@ public class Main extends JFrame {
     private  JList<Item> jItemList = new JList<>(itemList);
     private ItemViewRenderer itemRenderer = new ItemViewRenderer();
 
-    /**
-     * final file path for the
-     */
-
+    /**final file path for the images. */
     final private static String FILE_PATH = "/Users/angelvillalpando/Desktop/2-DGraphics/src/pricewatcher/base/image/";
 
     /** Default dimension of the dialog. */
@@ -188,6 +185,11 @@ public class Main extends JFrame {
         new Main();
     }
 
+    /**
+     * Produces button icons for control panel
+     * @param s Icon image file path
+     * @return BufferedImage The new icon for the control panel button
+     */
     public static BufferedImage iconMaker(String s){
         BufferedImage buttonIcon;
         try{
@@ -199,6 +201,11 @@ public class Main extends JFrame {
         return buttonIcon;
     }
 
+    /**
+     * Produces the buttons for the control panel
+     * @param s The icon image name
+     * @return JButton The new control panel button
+     */
     private static JButton buttonMaker(String s){
         final JButton button;
         button = new JButton(new ImageIcon(iconMaker(s)));
@@ -206,6 +213,10 @@ public class Main extends JFrame {
         return button;
     }
 
+    /**
+     * Produces a new menu
+     * @return JMenuBar The newly produces menuBar
+     */
     private static JMenuBar menuMaker(){
         final JMenuBar menuBar = new JMenuBar();
         final JMenu menu = new JMenu("App");
@@ -224,6 +235,4 @@ public class Main extends JFrame {
 
         return menuBar;
     }
-
-
 }
