@@ -30,6 +30,14 @@ import java.awt.event.*;
 @SuppressWarnings("serial")
 public class Main extends JFrame {
 
+    private  DefaultListModel<Item> itemList = new DefaultListModel<>();
+    private  JList<Item> jItemList = new JList<>(itemList);
+    private ItemViewRenderer itemRenderer = new ItemViewRenderer();
+
+    /**
+     * final file path for the
+     */
+
     final private static String FILE_PATH = "/Users/angelvillalpando/Desktop/2-DGraphics/src/pricewatcher/base/image/";
 
     /** Default dimension of the dialog. */
@@ -51,6 +59,13 @@ public class Main extends JFrame {
     public Main(Dimension dim) {
         super("Price Watcher");
         setSize(dim);
+
+        Item[] userItems = new Item[2];
+        userItems[0] = new Item("11-inch iPad Pro", "https://www.apple.com/shop/buy-ipad/ipad-pro", 799.00f);
+        userItems[1] = new Item("iPhone XS", "https://www.apple.com/shop/buy-iphone/iphone-xs", 699.00f);
+        itemList.addElement(userItems[0]);
+        itemList.addElement(userItems[1]);
+        jItemList.setCellRenderer(itemRenderer);
 
         configureUI();
         setLocationRelativeTo(null);
@@ -114,9 +129,7 @@ public class Main extends JFrame {
 
         JScrollPane pane = new JScrollPane();
 
-
-        JList testItemList = listMaker();
-        pane.setViewportView(testItemList);
+        pane.setViewportView(jItemList);
         board.add(pane);
 
 
@@ -184,29 +197,6 @@ public class Main extends JFrame {
             System.out.println("BooHOO");
         }
         return buttonIcon;
-    }
-
-    public static JList listMaker() {
-
-        Item[] list = new Item[2];
-        list[0] = new Item("Poopie Underwear Cleaner", "https://www.kewl.com", 200.00f);
-        list[1] = new Item("Shit", "https://www.poopfactory.com", 150.00f);
-
-        ItemViewRenderer itemRenderer = new ItemViewRenderer();
-
-
-        DefaultListModel<Item> itemList = new DefaultListModel<>();
-        itemList.addElement(list[0]);
-        itemList.addElement(list[1]);
-
-
-        JList<Item> jItemList = new JList<>(itemList);
-        jItemList.setCellRenderer(itemRenderer);
-
-
-
-        return jItemList;
-
     }
 
     private static JButton buttonMaker(String s){

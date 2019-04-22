@@ -119,7 +119,10 @@ public class ItemView extends JPanel {
         }
         return null;
     }
-    /* This is a method to play the sound when the experiences a drop.*/
+
+    /**
+     * Plays sound when the price change is negative
+     */
     public void playSound(){
         try {
             Clip audio;
